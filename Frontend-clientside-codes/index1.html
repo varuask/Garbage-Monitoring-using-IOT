@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+    <head>
+	  <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <meta name="saurav" content="sauravkumar-lazybug">
+	  <meta http-equiv="Access-Control-Allow-Origin" content="*">
+
+	 <!-- If you are opening this page from local machine, uncomment belwo line -->
+
+	<!--  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>-->
+
+
+	 <!-- If you are opening this page from a web hosting server machine, uncomment belwo line -->
+
+	 <script type="text/javascript">
+		document.write([
+			"\<script src='",
+			("https:" == document.location.protocol) ? "https://" : "http://",
+			"ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js' type='text/javascript'>\<\/script>"
+		].join(''));
+	  </script>
+	 
+      <title>Nagar Nigam Dustbin Monitoring</title>
+        <style>
+
+	.footer{
+		background:#A475B5;
+		width:100%;
+		height:70px;
+		position:absolute;
+		bottom:0;
+		left:0;
+	}
+
+    .center {
+		height: 400px;
+		width: 400px;
+		background: #c0c5ce;
+		position: fixed;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		top: 50%;
+		left: 50%;
+		margin-top: -180px;
+		margin-left: -200px;
+	}
+
+	.form{
+		padding-top: 10px;
+		padding-right: 30px;
+		padding-bottom: 80px;
+		padding-left: 30px;
+	}
+    .ip{
+		background-color: #ffffff; /* Green */
+		border: none;
+		color: black;
+		padding: 16px 32px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		margin: 4px 2px;
+		-webkit-transition-duration: 0.4s; /* Safari */
+    }
+      </style>
+    </head>
+
+
+
+
+
+    <body bgcolor="#ffffff">
+<center>
+    <h1 style="font-family: Helvetica;color: black;">Municipal Corporation LIVE City Dustbin Monitoring</h1>
+</center>
+<div class="center">
+ <div align="center" class="form">
+       <br><br>
+        <p style = 'line-height: 60px;font-family: Helvetica;color: #fff;font-size: 50px;' id="percent">
+            <img src = 'dust.png' height="120px" width="120px" style='vertical-align: middle' /> 1000
+        </p>
+        <p style = 'line-height: 60px;font-family: Helvetica;color: #fff;font-size: 50px;' id="levels">
+            <img src = 'levels.jpg' height="100px" width="100px" style='vertical-align: middle' /> NA
+        </p>
+    </div>
+</div>
+<footer class="footer">
+<center>
+  <h4 style="font-family: Helvetica;color: white;">&copy; 2019 | <a href="http://vit.ac.in">VIT-Vellore</a> </h4>
+</center>
+</footer>
+</body>
+<script>
+window.onload = function() {
+        loaddata();
+    };
+function loaddata(){
+    var url = "https://nagarnigam.000webhostapp.com/api/read_all.php";
+    $.getJSON(url, function(data) {
+                var val= data;
+              var levels=(data['dust1'][(Object.keys(data['dust1']).length)-1]['levels']);
+               var percent=(data['dust1'][(Object.keys(data['dust1']).length)-1]['percent']);
+               document.getElementById("percent").innerHTML = "<img src = 'dust.png' height=\"120px\" width=\"120px\" style='vertical-align: middle' />  " +percent+"%";
+               document.getElementById("levels").innerHTML = "<img src = 'levels.jpg' height=\"100px\" width=\"100px\" style='vertical-align: middle' />  "+levels;
+      console.log(data['dust1'][(Object.keys(data['dust1']).length)-1]['percent']);
+    });
+
+    }
+    window.setInterval(function(){
+    loaddata();
+        }, 5000);
+
+</script>
+</html>
