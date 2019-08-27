@@ -5,7 +5,7 @@ A prototype version of how the emerging technology like **Internet Of Things** c
 
 # Specifications
 
-The projects includes the use of different hardware systems,sensors for monitoring and sending the data,Different web technologies to manage and display the data and as well as saving the data for future use.The Details of which are provided down below. **offline!**
+The projects includes the use of different hardware systems,sensors for monitoring and sending the data,Different web technologies to manage and display the data and as well as saving the data for future use.The Details of which are provided down below.
 
 ## Hardware
 
