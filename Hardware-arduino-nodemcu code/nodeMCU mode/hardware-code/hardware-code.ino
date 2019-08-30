@@ -1,16 +1,6 @@
 
 
 
-/* this code is written as part of our TARP PROJECT
-Members:
-  Adesh
-  Shubham
-  Saurav
-  Priyan
-  Harsh
-Faculty:
-  Dr. Dhanamjayulu
-*/
 
 //**********************************adding all the important libraries******************//
 #include <ESP8266WiFi.h>
