@@ -14,8 +14,6 @@
 //**********************************defining the major pins****************************//
 #define TRIGGERPIN1 D1
 #define ECHOPIN1    D2
-#define TRIGGERPIN2 D3
-#define ECHOPIN2    D4
 #define BLYNK_PRINT Serial
 
 //***********************************mobile app config*******************************//
@@ -52,9 +50,7 @@ void setup()
 
   //****************************setting up pins for our function*******************//
   pinMode(TRIGGERPIN1, OUTPUT);//mode of trigger pin as output
-  pinMode(TRIGGERPIN2, OUTPUT);
   pinMode(ECHOPIN1, INPUT);//mode of echopin is set as input as it takes the input
-  pinMode(ECHOPIN2, INPUT);
   Blynk.begin(auth, ssid, pass); //to start the app
   //mobile app settings
   lcd.clear(); //Use it to clear the LCD Widget lcd
@@ -72,28 +68,23 @@ void loop()
   lcd1.print(0,0,"GARBAGE LEVEL"); //caption is again set
 
   //*****************************************//
-  float duration1, distance1,duration2,distance2; //setting the variables for our calculation of the data
-  float percen1,percen2;
-  String levels,levels2;
+  float duration1, distance1; //setting the variables for our calculation of the data
+  float percen1;
+  String levels;
   
   digitalWrite(TRIGGERPIN1, LOW); //a low pulse is given out of the ultrasonic sensor 1
-  digitalWrite(TRIGGERPIN2, LOW); //a low pulse is given out of the ultrasonic sensor 2
   delayMicroseconds(3); 
   digitalWrite(TRIGGERPIN1, HIGH); //a high pulse is given for 12 microseconds
-  digitalWrite(TRIGGERPIN2, HIGH); //
   delayMicroseconds(12); 
   digitalWrite(TRIGGERPIN1, LOW); //then the pulse is again set to low
-  digitalWrite(TRIGGERPIN2, LOW);
   duration1 = pulseIn(ECHOPIN1, HIGH); //reads the duration of time for which the echopin remains high
-  duration2 = pulseIn(ECHOPIN2,HIGH);
   distance1 = (duration1/2) / 29.1; //converting that duration into distance using the formula d=s*t 
                                   //s is the speed of light in cm/s.
   lcd.print(7,1,distance1);
   Blynk.run();
-  distance2 = (duration2/2) / 29.1;
   //********************lines of code for web******************************************//
 
-  //****************************necessary calcualtions for tt dusbin 1********//
+  //****************************necessary calcualtions for sjt dusbin 1********//
   if(distance1>35)
   {
     percen1=500;
@@ -117,28 +108,7 @@ void loop()
   }
 
 
-  //*************************************calcualtions for dusbin at sjt******************************************//
-    if(distance2>35)
-  {
-    percen2=500;
-    levels2="uncertain";
-  }
-  else
-  {
-    percen2 = ((distance2)/35)*100;
-    if(percen2>75)
-    {
-      levels2="empty";
-    }
-    else if(percen2>40&&percen2<75)
-    {
-      levels2="medium";
-    }
-    else
-    {
-      levels2="full";
-    }
-  }
+  
   //****************WiFi client object*************************************************//
   Serial.print("connecting to");
   Serial.println(host);
@@ -151,7 +121,6 @@ void loop()
   }
   //setting up the url for making the GET request....
   String url = "/api/insert.php?percent="+String(percen1)+"&"+"levels="+levels;
-  String url2 = "/api/insert2.php?percent="+String(percen2)+"&"+"levels="+levels2;
 
   Serial.print("requesting url");
   Serial.println(url);
@@ -172,18 +141,7 @@ void loop()
 
   delay(5000);
   
-  Serial.println("req part 2");
-  Serial.println(url2);
-  client.print(String("GET ") + url2 + " HTTP/1.1\r\n" +
-               "Host: " + host + "\r\n" + 
-               "Connection: close\r\n\r\n");
-
-  delay(5000);
-  while(client.available()){
-    String line = client.readStringUntil('\r');
-    Serial.print(line);
-  }             
- 
+  
 
   //*****************************************************mobile app displaying stuff****************************************************//
   if(distance1<=5)
