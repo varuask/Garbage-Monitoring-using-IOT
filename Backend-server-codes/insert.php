@@ -9,8 +9,8 @@ $response = array();
 // Check if we got the field from the user
 if (isset($_GET['percent']) && isset($_GET['levels'])) {
 
-    $temp = $_GET['percent'];
-    $hum = $_GET['levels'];
+    $percent = $_GET['percent'];
+    $levels = $_GET['levels'];
 
     // Include data base connect class
     $filepath = realpath (dirname(__FILE__));
